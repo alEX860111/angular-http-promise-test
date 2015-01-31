@@ -3,14 +3,15 @@ var app = angular.module("myapp", []);
 app.controller("myctrl", ["$scope", "movieService", function($scope, movieService) {
   movieService.getMovie()
     .then(function(movieData) {
+      console.log("then is called");
       $scope.movieData = movieData;
     });
 }]);
 
-app.factory('movieService', ["$http", "movieConverter", function($http, movieConverter) {
+app.factory("movieService", ["$http", "movieConverter", function($http, movieConverter) {
   return {
     getMovie: function() {
-      return $http.get('/movie')
+      return $http.get("/movie")
         .then(function(response) {
           return movieConverter.processMovie(response.data);
         });
@@ -18,7 +19,7 @@ app.factory('movieService', ["$http", "movieConverter", function($http, movieCon
   };
 }]);
 
-app.factory('movieConverter', function() {
+app.factory("movieConverter", function() {
   return {
     processMovie: function(movie) {
       movie.title = movie.title.toUpperCase();
