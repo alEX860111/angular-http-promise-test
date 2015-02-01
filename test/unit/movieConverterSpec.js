@@ -1,28 +1,33 @@
 describe("movieConverter", function() {
+    // The system under test.
+  var movieConverter;
 
+  // The input for the movieConverter.
   var movie = {
     title: "mib",
     price: 9900
   };
 
-  var movieConverterSUT;
+  // The expected output of the movieConverter.
+  var convertedMovie = {
+    title: "MIB",
+    price: 99.00
+  };
 
+  // Load the module "myapp".
   beforeEach(function() {
     module("myapp");
   });
 
-  beforeEach(inject(function(movieConverter) {
-    movieConverterSUT = movieConverter
+  // Inject the movieConverter to be tested.
+  beforeEach(inject(function(_movieConverter_) {
+    movieConverter = _movieConverter_;
   }));
 
-  describe("processMovie", function() {
-    it("should correcly process a movie", function() {
-      expect(movieConverterSUT.processMovie(movie)).toEqual({
-        title: "MIB",
-        price: 99.00
-      });
+  describe("convertMovie()", function() {
+    it("should correcly convert a movie", function() {
+      expect(movieConverter.convertMovie(movie)).toEqual(convertedMovie);
     });
   });
-
 
 });

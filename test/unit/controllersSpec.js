@@ -3,12 +3,13 @@ describe("myctrl", function() {
     title: "MIB",
     price: 99.00
   };
+
   var scope;
   var deferred;
-  var movieServiceMock;
+  var movieService;
 
   var movieServiceAnswers = function() {
-    // Resolve the promise, i.e. define an return value.
+    // Resolve the promise, i.e. define a return value.
     deferred.resolve(movie);
     // Propagate promise resolution to 'then' functions using $apply().
     scope.$apply();
@@ -20,14 +21,14 @@ describe("myctrl", function() {
   });
 
   // Mock the movieService.
-  beforeEach(inject(function($q, movieService) {
-    movieServiceMock = movieService;
+  beforeEach(inject(function($q, _movieService_) {
+    movieService = _movieService_;
     // $q is a service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.
     // The purpose of the deferred object is to expose the associated promise instance.
     deferred = $q.defer();
 
     // Use jasmines spyOn to mock the call to getMovie on the movieService
-    spyOn(movieServiceMock, "getMovie").and.returnValue(deferred.promise);
+    spyOn(movieService, "getMovie").and.returnValue(deferred.promise);
   }));
 
   // Instantiate the controller to be tested.
@@ -42,10 +43,10 @@ describe("myctrl", function() {
   }));
 
   it("should write the movieData to the scope after the movieService has answered", function() {
-    expect(movieServiceMock.getMovie).toHaveBeenCalled();
-    expect(scope.movieData).toBeUndefined();
+    expect(movieService.getMovie).toHaveBeenCalled();
+    expect(scope.movie).toBeUndefined();
     movieServiceAnswers();
-    expect(scope.movieData).toEqual(movie);
+    expect(scope.movie).toEqual(movie);
   });
 
 });
